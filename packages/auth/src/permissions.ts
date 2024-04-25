@@ -15,11 +15,13 @@ export const permissions: Record<Role, PermissionsByRole> = {
 
     can('manage', 'all') // Um admin pode geranciar todas as ações e qualquer entidade
   },
-  MEMBER: (_user, builder) => {
+  MEMBER: (user, builder) => {
     const { can } = builder
 
-    // can('invite', 'User') // um membro pode apenas convidar um outro usuário
-    can('manage', 'Project')
+    can(['create', 'get'], 'Project')
+
+    // O terceiro parâmetro é a condicional para que o membro possa ou não realizar o update e delete
+    can(['update', 'delete'], 'Project', { ownerId: { $eq: user.id } })
   },
   BILLING: () => {},
 }

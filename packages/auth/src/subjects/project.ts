@@ -1,6 +1,8 @@
 // https://casl.js.org/v6/en/advanced/typescript#safer-permissions-inference
 import { z } from 'zod'
 
+import { projectSchema } from '../models/project'
+
 // tupla = array com 2 posições
 export const projectSubject = z.tuple([
   z.union([
@@ -10,7 +12,7 @@ export const projectSubject = z.tuple([
     z.literal('get'),
     z.literal('update'),
   ]),
-  z.literal('Project'),
+  z.union([z.literal('Project'), projectSchema]),
 ])
 
 export type ProjectSubject = z.infer<typeof projectSubject>

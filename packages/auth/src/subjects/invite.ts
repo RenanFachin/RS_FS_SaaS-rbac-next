@@ -2,15 +2,14 @@
 import { z } from 'zod'
 
 // tupla = array com 2 posições
-export const projectSubject = z.tuple([
+export const inviteSubject = z.tuple([
   z.union([
-    z.literal('create'),
-    z.literal('delete'),
     z.literal('manage'),
+    z.literal('create'),
     z.literal('get'),
-    z.literal('update'),
+    z.literal('delete'),
   ]),
-  z.literal('Project'),
+  z.literal('Invite'),
 ])
 
-export type ProjectSubject = z.infer<typeof projectSubject>
+export type InviteSubject = z.infer<typeof inviteSubject>

@@ -10,18 +10,27 @@ type PermissionsByRole = (
 ) => void
 
 export const permissions: Record<Role, PermissionsByRole> = {
-  ADMIN: (_user, builder) => {
-    const { can } = builder
+  ADMIN: (user, builder) => {
+    const { can, cannot } = builder
 
-    can('manage', 'all') // Um admin pode geranciar todas as ações e qualquer entidade
+    can('manage', 'all') // admin pode gerenciar tudo
+
+    cannot('transfer_ownership', 'Organization') // definindo que o adm não pode transferir o dono de organizações
+    can('transfer_ownership', 'Organization', { ownerId: { $eq: user.id } }) // Ele pode apenas transferir organizações na qual ele seja o dono
+
+    cannot('update', 'Organization') // não pode fazer update em qualquer organização
+    can('update', 'Organization', { ownerId: { $eq: user.id } }) // Ele pode apenas fazer update na organização que for dele
   },
   MEMBER: (user, builder) => {
     const { can } = builder
 
+    can('get', 'User')
     can(['create', 'get'], 'Project')
-
-    // O terceiro parâmetro é a condicional para que o membro possa ou não realizar o update e delete
     can(['update', 'delete'], 'Project', { ownerId: { $eq: user.id } })
   },
-  BILLING: () => {},
+  BILLING: (_user, builder) => {
+    const { can } = builder
+
+    can('manage', 'Billing')
+  },
 }

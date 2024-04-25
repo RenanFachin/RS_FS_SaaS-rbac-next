@@ -20,5 +20,6 @@ export const permissions: Record<Role, PermissionsByRole> = {
     const { can } = builder
 
     can('invite', 'User') // um membro pode apenas convidar um outro usuário
+    can('manage', 'Project')
   },
 }

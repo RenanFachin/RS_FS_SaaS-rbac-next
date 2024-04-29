@@ -12,6 +12,7 @@ import {
 
 import { authenticatedWithPassword } from './routes/auth/authenticate-with-password'
 import { createAccount } from './routes/auth/create-account'
+import { getProfile } from './routes/auth/get-profile'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -43,6 +44,7 @@ app.register(fastifyJWT, {
 // rotas
 app.register(createAccount)
 app.register(authenticatedWithPassword)
+app.register(getProfile)
 
 app.listen({ port: 3333 }).then(() => {
   console.log('Http Server Running!')

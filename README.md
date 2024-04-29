@@ -81,3 +81,40 @@ Roles & permissions.
 - Only owners may transfer organization ownership;
 - Only administrators and project authors may update/delete the project;
 - Members can leave their own organization;
+
+
+// 
+
+## Executando o projeto
+
+### Back-end
+```js
+// Realizar o clone da aplicação
+git clone https://github.com/RenanFachin/RS_FS_SaaS-rbac-next.git
+
+// Acessar a pasta da api (apps/api)
+
+// Instalar dependências
+npm i
+
+// Subir o serviço do PostgreSQL via docker
+docker compose up -d
+
+// Copiar o arquivo com os dados de conexão e demais variáveis ambiente
+cp .env.example .env
+
+// Criar as tabelas do banco de dados (em desenvolvimento)
+npx prisma migrate dev
+
+// Populando o banco de dados
+npm prisma db seed
+
+// Execute o projeto
+npm run dev
+
+// Visualizando o banco de dados
+npx prisma studio
+
+// Criar as tabelas do banco de dados (em produção)
+npx prisma migrate deploy
+```

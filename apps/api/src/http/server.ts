@@ -2,6 +2,7 @@ import fastifyCors from '@fastify/cors'
 import fastifyJWT from '@fastify/jwt'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUI from '@fastify/swagger-ui'
+import { env } from '@saas/env'
 import { fastify } from 'fastify'
 import {
   jsonSchemaTransform,
@@ -11,6 +12,7 @@ import {
 } from 'fastify-type-provider-zod'
 
 import { errorHandler } from './error-handler'
+import { authenticatedWithGithub } from './routes/auth/authenticate-with-github'
 import { authenticatedWithPassword } from './routes/auth/authenticate-with-password'
 import { createAccount } from './routes/auth/create-account'
 import { getProfile } from './routes/auth/get-profile'
@@ -43,7 +45,7 @@ app.register(fastifySwaggerUI, {
 })
 
 app.register(fastifyJWT, {
-  secret: 'my-jwt-secret5347890-',
+  secret: env.JWT_SECRET,
 })
 
 // rotas
@@ -52,7 +54,8 @@ app.register(authenticatedWithPassword)
 app.register(getProfile)
 app.register(requestPasswordRecover)
 app.register(resetPassword)
+app.register(authenticatedWithGithub)
 
-app.listen({ port: 3333 }).then(() => {
+app.listen({ port: env.SERVER_PORT }).then(() => {
   console.log('Http Server Running!')
 })

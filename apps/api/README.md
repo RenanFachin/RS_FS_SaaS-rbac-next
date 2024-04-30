@@ -21,14 +21,9 @@ Subir o serviço do PostgreSQL via docker
 docker compose up -d
 ```
 
-Copiar o arquivo com os dados de conexão e demais variáveis ambiente
-```bash
-cp .env.example .env
-```
-
 Criar as tabelas do banco de dados (em desenvolvimento)
 ```bash
-npx prisma migrate dev
+npm run db:migrate
 ```
 
 Populando o banco de dados
@@ -49,7 +44,7 @@ http://localhost:3333/docs/
 
 Visualizando o banco de dados
 ```bash
-npx prisma studio
+npm run db:studio
 ```
 
 Criar as tabelas do banco de dados (em produção)

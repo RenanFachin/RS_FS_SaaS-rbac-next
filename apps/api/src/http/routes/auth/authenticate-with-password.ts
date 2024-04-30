@@ -5,6 +5,8 @@ import { z } from 'zod'
 
 import { prisma } from '@/lib/prisma'
 
+import { BadRequestError } from '../_errors/bad-request-error'
+
 export async function authenticatedWithPassword(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
     '/sessions/password',
@@ -17,9 +19,6 @@ export async function authenticatedWithPassword(app: FastifyInstance) {
           password: z.string(),
         }),
         response: {
-          400: z.object({
-            message: z.string(),
-          }),
           201: z.object({
             token: z.string(),
           }),
@@ -36,17 +35,14 @@ export async function authenticatedWithPassword(app: FastifyInstance) {
       })
 
       if (!userFromEmail) {
-        return reply.status(400).send({
-          message: 'Invalid credentials',
-        })
+        throw new BadRequestError('Invalid credentials')
       }
 
       // Esta condição quer dizer que o usuário se autentica utilizando o github
       if (userFromEmail.passwordHash === null) {
-        return reply.status(400).send({
-          message:
-            'User does not have a password, use social login to authenticate',
-        })
+        throw new BadRequestError(
+          'User does not have a password, use social login to authenticate',
+        )
       }
 
       // Validando a senha passada com a senha criptografada
@@ -56,9 +52,7 @@ export async function authenticatedWithPassword(app: FastifyInstance) {
       )
 
       if (!isPasswordValid) {
-        return reply.status(400).send({
-          message: 'Invalid credentials',
-        })
+        throw new BadRequestError('Invalid credentials')
       }
 
       // TOKEN JWT

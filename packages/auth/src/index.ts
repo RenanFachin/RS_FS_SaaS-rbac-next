@@ -17,6 +17,7 @@ import { userSubject } from './subjects/user'
 export * from './models/organization'
 export * from './models/project'
 export * from './models/user'
+export * from './roles'
 
 // Aplicando as permissões conforme os cargos, especificados no Subject de cada entidade
 const appAbilitiesSchema = z.union([

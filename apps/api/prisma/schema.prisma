@@ -7,7 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// 1 usuário pode ter vários tokens, pode ter várias contas, vários convites e fazer parte de várias organizações
 model User {
   id           String   @id @default(uuid())
   name         String?
@@ -27,7 +26,6 @@ model User {
   @@map("users")
 }
 
-// token é para a recuperação de senha ou outros tokens de usuário 
 enum TokenType {
   PASSWORD_RECOVER
 }
@@ -82,8 +80,6 @@ model Invite {
   @@map("invites")
 }
 
-// Tabela Pivo Member é a relação entre um User e uma Organization
-// 1 user pode fazer parte de mais de uma organization
 model Member {
   id   String @id @default(uuid())
   role Role   @default(MEMBER)
@@ -98,7 +94,6 @@ model Member {
   @@map("members")
 }
 
-// Uma organization pode ter vários invites, membros e projetos
 model Organization {
   id                        String   @id @default(uuid())
   name                      String
@@ -109,7 +104,7 @@ model Organization {
   createdAt                 DateTime @default(now()) @map("created_at")
   updatedAt                 DateTime @updatedAt @map("updated_at")
 
-  owner  User   @relation(fields: [ownerId], references: [id])
+  owner   User   @relation(fields: [ownerId], references: [id])
   ownerId String @map("owner_id")
 
   invites  Invite[]
@@ -128,11 +123,11 @@ model Project {
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
-  owner  User   @relation(fields: [ownerId], references: [id])
-  ownerId String @map("owner_id")
-
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String       @map("organization_id")
+
+  owner   User   @relation(fields: [ownerId], references: [id])
+  ownerId String @map("owner_id")
 
   @@map("projects")
 }

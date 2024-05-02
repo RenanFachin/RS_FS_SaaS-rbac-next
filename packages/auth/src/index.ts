@@ -50,5 +50,10 @@ export function defineAbilityFor(user: User) {
       return subject.__typename
     },
   })
+
+  // Definindo o "this" de ability, mesmo com ela sendo desestruturada em outro local
+  ability.can = ability.can.bind(ability)
+  ability.cannot = ability.cannot.bind(ability)
+
   return ability
 }

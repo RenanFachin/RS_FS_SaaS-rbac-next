@@ -13,7 +13,7 @@ export async function getProjects(app: FastifyInstance) {
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .get(
-      '/organizations/:orgSlug/projects',
+      '/organizations/:slug/projects',
       {
         schema: {
           tags: ['projects'],
@@ -29,14 +29,14 @@ export async function getProjects(app: FastifyInstance) {
                   id: z.string().uuid(),
                   name: z.string(),
                   slug: z.string(),
-                  avatarUrl: z.string().nullable(),
+                  avatarUrl: z.string().url().nullable(),
                   organizationId: z.string(),
                   ownerId: z.string(),
                   createdAt: z.date(),
                   owner: z.object({
                     id: z.string().uuid(),
                     name: z.string().nullable(),
-                    avatarUrl: z.string().nullable(),
+                    avatarUrl: z.string().url().nullable(),
                   }),
                 }),
               ),
